@@ -55,7 +55,8 @@ class Game():
         self.locationCustomers = [[0,3], [2,5], [4,7]]
         self.numCustomers = 0
         self.totalRevenue = 0
-        self.broadcast = 0
+        self.prev = 0 
+        self.rent = [5,10,15]
 
 
     def customers(self):
@@ -94,26 +95,25 @@ class Game():
 
     def dailyRevenue(self):
         
-        if self.numUnits >= self.numCustomers:
+        if self.numUnits >= self.numCustomers and not (self.numUnits == 0):
             self.revenue = self.numCustomers*self.unitPrice
             self.numUnits -= self.numCustomers
-        elif self.numUnits < self.numCustomers:
-            print("You ran out of inventory and left " + str(self.numCustomers) + " customers unhappy; popularity is decreased")
-            print("Press SHIFT to update inventory")
-            #self.broadcast = 1
+        elif self.prev < self.numCustomers:
             self.popularity -= 1
             self.revenue = self.numUnits*self.unitPrice
-            self.numUnits = 0
+
+            #self.numUnits = 0
 
         self.cash += self.revenue
         self.totalRevenue += self.revenue
+        self.cash -= self.rent[0]
 
-    def checkIn():
-        while not keyboard.is_pressed('CTRL'):
-            if keyboard.is_pressed('shift'):
-                while keyboard.is_pressed('shift'):
-                    noValue = 1
-                print('William is Gay')
+    #def checkIn():
+        #while not keyboard.is_pressed('CTRL'):
+            #if keyboard.is_pressed('shift'):
+                #while keyboard.is_pressed('shift'):
+                    #noValue = 1
+                #print('William is Gay')
 
 
     def startTimer(self):
@@ -126,8 +126,14 @@ class Game():
                     while keyboard.is_pressed('CTRL'):
                         noValue = 1
                     key = 1
-                    checkIn()
-                    self.day +=1
+                    #checkIn()
+                    self.day +=1            
+                elif keyboard.is_pressed('SHIFT'):
+                    while keyboard.is_pressed('SHIFT'):
+                        noValue = 1
+                    key = 1
+                    self.start()
+                    #checkIn()
                 
                 
                 # print(key)
@@ -135,7 +141,9 @@ class Game():
                     #changeSettings()
             
                     #self.settings()
+            self.prev = self.numUnits
             self.showData()
+
         
         
                 
@@ -189,6 +197,11 @@ class Game():
         print ("Units left: " + str(self.numUnits))
         print ("Daily revenue: " + str(self.revenue))
         print ("Total revenue: " + str(self.totalRevenue))
+        print ("Cash: " + self.cash)
+        if self.prev < self.numCustomers:
+            print("You ran out of inventory and left " + str(self.numCustomers-self.prev) + " customers unhappy; popularity is decreased")
+            print("Press SHIFT to update inventory")
+            self.numUnits = 0
         
         #print ("Profit: " + str(self.revenue-self.numUnits*self.cost))
 
